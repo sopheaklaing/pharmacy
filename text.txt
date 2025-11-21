@@ -1,0 +1,10 @@
+Next today
+2. Why This Structure is Recommended
+
+Dynamic Data – Fetches user info from the API and shows it.
+
+Loading & Error Handling – Displays loading or error messages so the UI isn’t blank.
+
+Scalable – You can add more fields or sections from your API easily.
+
+Styling Ready – Tailwind CSS classes make it look decent out of the box.
