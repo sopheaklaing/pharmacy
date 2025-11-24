@@ -4,7 +4,12 @@ const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
 const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
-  throw new Error("Missing Supabase environment variables.");
+  throw new Error("Missing Supabase environment variables. Please check your .env.local file.");
 }
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+  },
+});
