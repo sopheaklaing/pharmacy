@@ -8,3 +8,12 @@ Loading & Error Handling – Displays loading or error messages so the UI isn’
 Scalable – You can add more fields or sections from your API easily.
 
 Styling Ready – Tailwind CSS classes make it look decent out of the box.
+
+
+
+
+
+
+git add .
+git commit -m "Your message"
+git push

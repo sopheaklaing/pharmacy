@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/app/config/supabase";
 import type { Session } from "@supabase/supabase-js";
-import Header from "./components/header/navbar";
 import Sidebar from "./components/header/sidebar";
+import Header from "./components/header/navbar";
 
 export default function DashboardLayout({
   children,
@@ -17,12 +17,13 @@ export default function DashboardLayout({
   const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+  // Get session and subscribe to auth changes
   useEffect(() => {
     const getSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
       setLoading(false);
-      
+
       if (!session) {
         router.push("/login");
       }
@@ -42,13 +43,11 @@ export default function DashboardLayout({
     return () => subscription.unsubscribe();
   }, [router]);
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   if (loading) {
     return (
-     <div className="min-h-screen bg-gradient-to-br from-cyan-50 to-blue-50">
+      <div className="min-h-screen bg-gradient-to-br from-cyan-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
@@ -57,35 +56,26 @@ export default function DashboardLayout({
     );
   }
 
-  if (!session) {
-    return null;
-  }
+  if (!session) return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
-      <Header 
-        onToggleSidebar={toggleSidebar} 
-        isSidebarOpen={isSidebarOpen} 
-      />
-      
-      {/* Main Content Area */}
-      <div className="flex pt-0"> {/* Added pt-16 to account for fixed header */}
+      <Header onToggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+
+      {/* Main Content */}
+      <div className="flex ">
         {/* Sidebar */}
-        <Sidebar 
-          isOpen={isSidebarOpen} 
-          onToggle={toggleSidebar} 
-        />
-        
-        {/* Main Content */}
-        <main className={`
-          flex-1 transition-all duration-300 ease-in-out min-h-[calc(100vh-4rem)]
-          ${isSidebarOpen ? 'lg:ml-64' : 'lg:ml-20'}
-          p-4 lg:p-6
-        `}>
-          <div className="max-w-7xl mx-auto">
-            {children}
-          </div>
+        <Sidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
+
+        {/* Main Content Area */}
+        <main
+          className={`
+            flex-1 transition-all duration-300 ease-in-out min-h-[calc(100vh-4rem)]
+            ${isSidebarOpen ? "lg:ml-64" : "lg:ml-20"}  lg:p-6
+          `}
+        >
+          <div className="max-w-7xl mx-auto">{children}</div>
         </main>
       </div>
     </div>
